@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  node1_c:
+    build: .
+    container_name: node1_c
+    env_file:
+      - .env.node1
+    ports:
+      - "5001:5001"
+    restart: always
+    volumes:
+      - ./logs/node1:/app/logs
+
+  node2_c:
+    build: .
+    container_name: node2_c
+    env_file:
+      - .env.node2
+    ports:
+      - "5002:5002"
+    restart: always
+    volumes:
+      - ./logs/node2:/app/logs
+
+  logs_node1:
+    image: busybox
+    container_name: logs_node1
+    volumes:
+      - ./logs/node1:/app/logs
+    command: tail -f /app/logs/output.log
+
+  logs_node2:
+    image: busybox
+    container_name: logs_node2
+    volumes:
+      - ./logs/node2:/app/logs
+    command: tail -f /app/logs/output.log
